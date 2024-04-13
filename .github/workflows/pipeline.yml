@@ -19,6 +19,8 @@ jobs:
         cache: 'npm'
     - name: Install npm dependencies
       run: npm install
+    - name: Replace Config Settings for lockalhost
+      run: echo "export const settings = { host:\"http://localhost:3030\" }" > src/config.js
     - name: Start the server
       run: npm run start-server &
     - name: Start the app
@@ -27,3 +29,25 @@ jobs:
       run: npx playwright install
     - name: Start the ui tests
       run: npm run test-ui
+
+  deploy-be:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_BE_ID }}
+          api-key: ${{ secrets.RENDER_TOKEN }}
+          wait-deploy: true
+
+  deploy-fe:
+    needs: deploy-be
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_FE_ID }}
+          api-key: ${{ secrets.RENDER_TOKEN }}
+          wait-deploy: true
