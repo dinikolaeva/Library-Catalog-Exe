@@ -39,7 +39,6 @@ jobs:
         with:
           service-id: ${{ secrets.SERVICE_BE_ID }}
           api-key: ${{ secrets.RENDER_TOKEN }}
-          wait-deploy: true
 
   deploy-fe:
     needs: deploy-be
@@ -50,4 +49,3 @@ jobs:
         with:
           service-id: ${{ secrets.SERVICE_FE_ID }}
           api-key: ${{ secrets.RENDER_TOKEN }}
-          wait-deploy: true
