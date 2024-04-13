@@ -1,6 +1,13 @@
-export const settings = {
-    host: '',
-};
+//Added for this specific render.com
+
+import * as config from "../config.js";
+
+export const settings = config.settings;
+
+// Original
+// export const settings = {
+//     host: '',
+// };
 
 async function request(url, options) {
     try {
